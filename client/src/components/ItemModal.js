@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   Button,
   Modal,
@@ -8,14 +8,14 @@ import {
   FormGroup,
   Label,
   Input
-} from 'reactstrap';
-import { connect } from 'react-redux';
-import { addItem } from '../actions/itemActions';
+} from "reactstrap";
+import { connect } from "react-redux";
+import { addItem } from "../store/actions/itemActions";
 
 class ItemModal extends Component {
   state = {
     modal: false,
-    name: ''
+    name: ""
   };
 
   toggle = () => {
@@ -47,7 +47,7 @@ class ItemModal extends Component {
       <div>
         <Button
           color="dark"
-          style={{ marginBottom: '2rem' }}
+          style={{ marginBottom: "2rem" }}
           onClick={this.toggle}
         >
           Add Item
@@ -66,7 +66,7 @@ class ItemModal extends Component {
                   placeholder="Add shopping item"
                   onChange={this.onChange}
                 />
-                <Button color="dark" style={{ marginTop: '2rem' }} block>
+                <Button color="dark" style={{ marginTop: "2rem" }} block>
                   Add Item
                 </Button>
               </FormGroup>
