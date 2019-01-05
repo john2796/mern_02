@@ -1,15 +1,21 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
-import jwt_code from "jwt-decode";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import jwt_code from "jwt-decode";
 import Landing from "./layout/Landing";
+import Login from "../LoginContainer/auth/Login";
 
 class LoginContainer extends Component {
   render() {
     return (
-      <div>
-        <Landing />
-      </div>
+      <Router>
+        <div>
+          <Route to="/" component={Landing} />
+          <Route to="/register" component={Landing} />
+          <Route to="/login" component={Login} />
+          <Switch>PrivateR</Switch>
+        </div>
+      </Router>
     );
   }
 }
