@@ -7,6 +7,8 @@ import { Container } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+import LoginContainer from "./components/LoginContainer/LoginContainer";
+
 class App extends Component {
   render() {
     return (
@@ -16,6 +18,7 @@ class App extends Component {
           <ItemModal />
           <ShoppingList />
         </Container>
+        <LoginContainer />
       </div>
     );
   }
