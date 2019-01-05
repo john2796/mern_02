@@ -7,73 +7,67 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.state = {
       email: "",
       password: "",
       errors: {}
     };
   }
-
   componentDidMount() {
-    // if logged in and user nvaigates to login page, should redirect them to dashboard
+    // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
     }
   }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard"); //push user to dashboard when they login
-      if (nextProps.errors) {
-        this.setState({ errors: nextProps.errors });
-      }
+      this.props.history.push("/dashboard"); // push user to dashboard when they login
+    }
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      });
     }
   }
-
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
-
   onSubmit = e => {
     e.preventDefault();
     const userData = {
       email: this.state.email,
       password: this.state.password
     };
-
-    this.props.loginUser(userData); //since we handle the redirect within our component, we don't need to pass in this.props.history as parameter
+    this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
   };
-
   render() {
     const { errors } = this.state;
-
     return (
       <div className="container">
-        <div className="row" style={{ marginTop: "4rem" }}>
+        <div style={{ marginTop: "4rem" }} className="row">
           <div className="col s8 offset-s2">
             <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i>
-              Back to home
+              <i className="material-icons left">keyboard_backspace</i> Back to
+              home
             </Link>
             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
               <h4>
-                <b>Login</b>below
+                <b>Login</b> below
               </h4>
               <p className="grey-text text-darken-1">
                 Don't have an account? <Link to="/register">Register</Link>
               </p>
             </div>
-            <form noValidate onSubmit>
-              {this.onSubmit}
+            <form noValidate onSubmit={this.onSubmit}>
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  errors={errors.email}
-                  type="email"
+                  value={this.state.email}
+                  error={errors.email}
                   id="email"
+                  type="email"
                   className={classnames("", {
                     invalid: errors.email || errors.emailnotfound
                   })}
@@ -86,11 +80,11 @@ class Login extends Component {
               </div>
               <div className="input-field col s12">
                 <input
-                  type="password"
-                  id="password"
                   onChange={this.onChange}
                   value={this.state.password}
-                  errors={errors.password}
+                  error={errors.password}
+                  id="password"
+                  type="password"
                   className={classnames("", {
                     invalid: errors.password || errors.passwordincorrect
                   })}
@@ -101,7 +95,7 @@ class Login extends Component {
                   {errors.passwordincorrect}
                 </span>
               </div>
-              <div className="col s12">
+              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                 <button
                   style={{
                     width: "150px",
@@ -122,18 +116,15 @@ class Login extends Component {
     );
   }
 }
-
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
-
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors
 });
-
 export default connect(
   mapStateToProps,
   { loginUser }
