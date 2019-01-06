@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import loginUser from "../../../store/reducers/authReducers";
 
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { loginUser } from "../../../store/actions/authActions";
 
 class Login extends Component {
   constructor() {
@@ -41,6 +41,7 @@ class Login extends Component {
       password: this.state.password
     };
     this.props.loginUser(userData); // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
+    console.log(userData);
   };
   render() {
     const { errors } = this.state;

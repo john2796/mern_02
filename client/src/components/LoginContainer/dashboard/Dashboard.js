@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../../store/actions/authActions";
+import MainApp from "../../MainApp";
 
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -13,6 +14,7 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
     return (
       <React.Fragment>
+        <MainApp />
         <div style={{ height: "20vh" }} className="container valign-wrapper">
           <div className="row">
             <div className="col s12 center-align">
