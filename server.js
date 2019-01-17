@@ -1,46 +1,50 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const path = require("path");
-const passport = require("passport");
 const cors = require("cors");
-
-const items = require("./routes/api/items");
-const users = require("./routes/api/users");
+const mongoose = require("mongoose");
+const logger = require("morgan");
 
 const app = express();
+const users = require("./routes/api/users");
+const insta = require("./routes/api/insta");
 
-// Bodyparser Middleware
+//middleware
+app.use(cors("dev"));
 app.use(bodyParser.json());
-app.use(cors());
-// DB Config
-const db = require("./config/keys").mongoURI;
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(logger());
 
-// Connect to Mongo
+//connect mongo
+const db = require("./config/keys").mongoURI;
 mongoose
   .connect(
     db,
     { useNewUrlParser: true }
-  ) // Adding new mongo url parser
-  .then(() => console.log("MongoDB Connected..."))
+  )
+  .then(() => console.log("MongoDB successfully connected"))
   .catch(err => console.log(err));
-// Passport middleware
-app.use(passport.initialize());
-// Passport config
-require("./config/passport")(passport);
-// Routes
+
+//connect routes
 app.use("/api/users", users);
-// Use Routes
-app.use("/api/items", items);
+app.use("/api/insta", insta);
 
 // Serve static assets if in production
+// if (process.env.NODE_ENV === "production") {
+//   // Set static folder
+//   app.use(express.static("client/build"));
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+//   });
+// }
+
 if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static("client/build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  app.use(express.static("client/build")); // serve the static react app
+  app.get(/^\/(?!api).*/, (req, res) => {
+    // don't serve api routes to react app
+    res.sendFile(path.join(__dirname, "./client/build/index.html"));
   });
+  console.log("Serving React App...");
 }
 
-const port = process.env.PORT || 6000;
-app.listen(port, () => console.log(`Server started on port ${port}`));
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`server running on port ${port}`));
